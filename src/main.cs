@@ -1,17 +1,42 @@
 class Program
 {
+    private static readonly string[] Commands =
+    [
+        "echo",
+        "exit",
+        "type"
+    ];
+    
     static void Main()
     {
         for (string? command; (command = GetInput()) != "exit";)
         {
             var arguments = ParseCommand(command);
+
             if (arguments.Length == 0)
                 continue;
-            if (arguments[0] == "echo")
-                Echo(arguments);
-            else
-                Console.Out.WriteLine($"{command}: command not found");
+
+            switch (arguments[0])
+            {
+                case "echo":
+                    Echo(arguments);
+                    break;
+                case "type":
+                    Type(arguments);
+                    break;
+                default:
+                    Console.Out.WriteLine($"{command}: command not found");
+                    break;
+            }
         }
+    }
+
+    private static void Type(string[] command)
+    {
+        if (command is ["type", _] && Commands.Contains(command[1]))
+            Console.Out.WriteLine($"{command[1]} is a shell builtin");
+        else
+            Console.Out.WriteLine($"{command[1]}: not found");
     }
 
     private static string? GetInput()
