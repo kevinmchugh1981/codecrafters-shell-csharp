@@ -2,16 +2,11 @@
 {
     public static ICommand CreateCommand(string command)
     {
-        switch (command)
+        return command switch
         {
-            case "echo":
-                return new EchoCommand();
-            case "type":
-                return new TypeCommand();
-            default:
-               return FileSearcher.IsExecutable(command, out var filePath) ? 
-                     new ExternalCommand(filePath) : new InvalidCommand();
-                
-        }
+            "echo" => new EchoCommand(),
+            "type" => new TypeCommand(),
+            _ => new ExternalCommand()
+        };
     }
 }
