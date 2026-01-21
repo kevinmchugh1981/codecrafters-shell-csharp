@@ -9,7 +9,9 @@
             case "type":
                 return new TypeCommand();
             default:
-                return new InvalidCommand();
+               return FileSearcher.IsExecutable(command, out var filePath) ? 
+                     new ExternalCommand(filePath) : new InvalidCommand();
+                
         }
     }
 }
