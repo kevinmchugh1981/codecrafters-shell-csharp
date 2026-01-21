@@ -1,14 +1,19 @@
 ﻿using System.Diagnostics;
 
-public class ExternalCommand() : ICommand
+public class ExternalCommand(string filePath) : ICommand
 {
+    private string filePath = filePath;
+
+
     public void Execute(string[] args)
     {
-        var command = args[0];
+        var command = Path.GetFileName(filePath);
+        var directory = Path.GetDirectoryName(filePath);
         var commandArgs = args.Length > 1 ? string.Join(" ", args.Skip(1).ToArray()) : string.Empty;
         
-        var startInfo = new ProcessStartInfo("/bin/sh", $"{command} {commandArgs}")
+        var startInfo = new ProcessStartInfo(command, commandArgs)
         {
+            WorkingDirectory = directory,
             RedirectStandardError = true,
             RedirectStandardOutput = true,
             UseShellExecute = false
