@@ -23,8 +23,8 @@ public class ExternalCommand(string filePath) : ICommand
         var error = process?.StandardError.ReadToEnd();
         process?.WaitForExit();
         if(!string.IsNullOrWhiteSpace(output))
-            Console.WriteLine(output);
+            Console.Write(output);
         if(!string.IsNullOrWhiteSpace(error))
-            Console.WriteLine(error);
+            Console.Write(error);
     }
 }
