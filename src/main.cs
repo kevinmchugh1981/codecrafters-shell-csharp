@@ -2,8 +2,17 @@ class Program
 {
     static void Main()
     {
-         Console.Write("$ ");
-         var command = Console.ReadLine();
-         Console.Out.WriteLine($"{command}: command not found");
+        
+        for (string? command; (command= GetInput()) != "exit";)
+        {
+            Console.Out.WriteLine($"{command}: command not found");
+        }
+        
+    }
+
+    private static string? GetInput()
+    {
+        Console.Write("$ ");
+        return Console.ReadLine();
     }
 }
