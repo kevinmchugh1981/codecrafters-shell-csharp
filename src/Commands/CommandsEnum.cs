@@ -5,6 +5,7 @@ internal static class CommandsEnum
     [
         "echo",
         "exit",
-        "type"
+        "type",
+        "pwd"
     ];
 }
