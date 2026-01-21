@@ -10,6 +10,7 @@ public class ExternalCommand() : ICommand
         var startInfo = new ProcessStartInfo("/bin/sh", $"{command} {commandArgs}")
         {
             RedirectStandardError = true,
+            RedirectStandardOutput = true,
             UseShellExecute = false
         };
         using var process = Process.Start(startInfo);
