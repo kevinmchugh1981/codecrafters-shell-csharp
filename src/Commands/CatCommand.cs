@@ -1,21 +1,28 @@
-﻿public class CatCommand :ICommand
+﻿using System.Text.RegularExpressions;
+
+public class CatCommand :ICommand
 {
-    public void Execute(string[] args)
+    private const string QuotedPattern = "'([^']*)'";
+    
+    public void Execute(string args)
     {
-        if (args.Length <= 1)
+        if (string.IsNullOrWhiteSpace(args))
         {
             Console.WriteLine(string.Empty);
             return;
         }
 
         var content = new List<string>();
-        var paths = args.Skip(1).ToArray().ParseStrings();
-        foreach (var path in paths.Where(File.Exists))
+        foreach (Match match in Regex.Matches(args, QuotedPattern))
         {
-            using var stream = new StreamReader(path);
+            if(!File.Exists(match.Groups[1].Value))
+                continue;
+            using var stream = new StreamReader(match.Groups[1].Value);
             content.Add(stream.ReadToEnd());
         }
         
         Console.WriteLine(string.Join(" ", content));
     }
+
+    
 }

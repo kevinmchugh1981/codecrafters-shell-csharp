@@ -2,16 +2,12 @@
 
 public class ExternalCommand(string filePath) : ICommand
 {
-    private string filePath = filePath;
-
-
-    public void Execute(string[] args)
+    public void Execute(string args)
     {
         var command = Path.GetFileName(filePath);
         var directory = Path.GetDirectoryName(filePath);
-        var commandArgs = args.Length > 1 ? string.Join(" ", args.Skip(1).ToArray()) : string.Empty;
         
-        var startInfo = new ProcessStartInfo(command, commandArgs)
+        var startInfo = new ProcessStartInfo(command, args)
         {
             WorkingDirectory = directory,
             RedirectStandardError = true,

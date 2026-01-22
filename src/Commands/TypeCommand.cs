@@ -3,21 +3,20 @@
 public class TypeCommand : ICommand
 {
 
-    public void Execute(string[] command)
+    public void Execute(string args)
     {
-        switch (command)
+
+        if (CommandsEnum.Commands.Contains(args))
         {
-            case ["type", _] when CommandsEnum.Commands.Contains(command[1]):
-                Console.Out.WriteLine($"{command[1]} is a shell builtin");
-                break;
-            case ["type", _] when FileSearcher.IsExecutable(command[1], out var filePath):
-            {
-                Console.Out.WriteLine($"{command[1]} is {filePath}");
-                break;
-            }
-            default:
-                Console.Out.WriteLine($"{command[1]}: not found");
-                break;
+            Console.Out.WriteLine($"{args} is a shell builtin");
+        }
+        else if (FileSearcher.IsExecutable(args, out var filePath))
+        {
+            Console.Out.WriteLine($"{args} is {filePath}");
+        }
+        else
+        {
+            Console.Out.WriteLine($"{args}: not found");
         }
     }
 

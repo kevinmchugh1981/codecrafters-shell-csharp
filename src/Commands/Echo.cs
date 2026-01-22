@@ -1,15 +1,21 @@
-﻿public class EchoCommand : ICommand
+﻿using System.Text.RegularExpressions;
+
+public class EchoCommand : ICommand
 {
-    public void Execute(string[] args)
+    private const string QuotedPattern = @"(?<=')[^']*(?=')";
+    private const string Pattern = @"\s+";
+
+    public void Execute(string args)
     {
-        if (args.Length <= 1)
+        if (string.IsNullOrWhiteSpace(args))
         {
             Console.WriteLine(string.Empty);
             return;
         }
 
-        var content = args.Skip(1).ToArray();
-        Console.WriteLine(string.Join(" ",  content.ParseStrings()));
-
+        Console.WriteLine(!args.Contains('\'')
+            ? Regex.Replace(args, Pattern, " ")
+            : Regex.Matches(args, QuotedPattern)[0].Value);
     }
+    
 }
