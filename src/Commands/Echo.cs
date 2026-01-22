@@ -3,6 +3,6 @@
     public void Execute(string[] input)
     {
         var content = input.Skip(1).ToArray();
-        Console.WriteLine(string.Join(" ", content));
+        Console.WriteLine(string.Join(" ", content.Select(x=> x.Replace("'",string.Empty))));
     }
 }
