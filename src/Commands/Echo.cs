@@ -13,9 +13,9 @@ public class EchoCommand : ICommand
             return;
         }
 
-        Console.WriteLine(!args.Contains('\'')
+        Console.WriteLine(!args.Contains("'")
             ? Regex.Replace(args, Pattern, " ")
-            : Regex.Matches(args, QuotedPattern)[0].Value);
+            : string.Join("", Regex.Matches(args, QuotedPattern)));
     }
     
 }

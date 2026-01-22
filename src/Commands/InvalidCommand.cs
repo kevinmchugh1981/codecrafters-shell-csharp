@@ -2,6 +2,6 @@
 {
     public void Execute(string args)
     {
-        Console.Out.WriteLine($"{command[0]}: command not found");
+        Console.Out.WriteLine($"{command}: command not found");
     }
 }

@@ -18,7 +18,7 @@ public class CatCommand :ICommand
             if(!File.Exists(match.Groups[1].Value))
                 continue;
             using var stream = new StreamReader(match.Groups[1].Value);
-            content.Add(stream.ReadToEnd());
+            content.Add(stream.ReadToEnd().Trim());
         }
         
         Console.WriteLine(string.Join(" ", content));
