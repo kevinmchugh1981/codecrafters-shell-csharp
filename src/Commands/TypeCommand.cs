@@ -5,13 +5,14 @@ public class TypeCommand : ICommand
 
     public void Execute(string args)
     {
-        if (FileSearcher.IsExecutable(args, out var filePath))
-        {
-            Console.Out.WriteLine($"{args} is {filePath}");
-        }
-        else if (CommandsEnum.Commands.ContainsKey(args))
+
+        if (CommandsEnum.Commands.ContainsKey(args) && CommandsEnum.IsShellBuiltIn(args))
         {
             Console.Out.WriteLine($"{args} is a shell builtin");
+        }
+        else if (FileSearcher.IsExecutable(args, out var filePath))
+        {
+            Console.Out.WriteLine($"{args} is {filePath}");
         }
         else
         {
