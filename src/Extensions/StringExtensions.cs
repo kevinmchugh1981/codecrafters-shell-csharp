@@ -2,10 +2,10 @@
 {
     internal static List<string> Parse(this string args)
     {
-        if (args.Contains('\''))
+        if (args.StartsWith('\''))
             return Parse(args, '\'');
 
-        return args.Contains('"') ? Parse(args, '\"') : args.Split(" ").ToList();
+        return args.StartsWith('"') ? Parse(args, '\"') : args.Split(" ").ToList();
     }
 
     private static List<string> Parse(string args, char delimiter)
@@ -14,35 +14,22 @@
 
         if (string.IsNullOrWhiteSpace(args) || char.IsWhiteSpace(delimiter))
             return result;
-
-        var addChar = false;
+        
         var currentString = string.Empty;
         for (var x = 0; x < args.Length; x++)
         {
-            if (args[x] == delimiter && addChar)
+            if (args[x] == delimiter)
             {
-                if (x+1 <= args.Length -1 && args[x + 1] == delimiter)
-                    result.Add(currentString);
-                else
-                    result.Add(currentString + " ");
-                currentString = string.Empty;
-                addChar = false;
-                continue;
-            }
-
-            if (args[x] == delimiter && !addChar)
-            {
-                addChar = true;
-                continue;
-            }
-
-            if (args[x] != delimiter && addChar)
-                currentString += args[x];
-
-            if (x == args.Length - 1 && addChar)
-            {
+                if (x == 0)
+                    continue;
                 result.Add(currentString);
+                currentString = string.Empty;
+                continue;
             }
+            currentString += args[x];
+            
+            if(x == args.Length - 1)
+                result.Add(currentString);
         }
 
         return result;
