@@ -10,7 +10,7 @@ public class EchoCommand : ICommand
             return;
         }
 
-        Console.Out.WriteLine(string.Join("", args.Parse()));
+        Console.Out.WriteLine(string.Join(" ", args.Parse()));
 
         /*  if (args.Contains('\''))
               Console.WriteLine(string.Join("", Extract(args, RegExs.QuotedPattern,1)));
