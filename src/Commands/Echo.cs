@@ -11,9 +11,9 @@ public class EchoCommand : ICommand
         }
 
         if (args.Contains('\''))
-            Console.WriteLine(string.Join(" ", Extract(args, RegExs.QuotedPattern,1)));
+            Console.WriteLine(string.Join("", Extract(args, RegExs.QuotedPattern,1)));
         else if (args.Contains('"'))
-            Console.WriteLine(string.Join(" ", Extract(args, RegExs.DoubleQuotedPattern,1)));
+            Console.WriteLine(string.Join("", Extract(args, RegExs.DoubleQuotedPattern,1)));
         else
             Console.WriteLine(Regex.Replace(args, RegExs.SpacePattern, " "));
     }
