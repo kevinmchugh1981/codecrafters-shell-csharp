@@ -2,7 +2,6 @@
 
 public class CatCommand :ICommand
 {
-    private const string QuotedPattern = "'([^']*)'";
     
     public void Execute(string args)
     {
@@ -13,7 +12,7 @@ public class CatCommand :ICommand
         }
 
         var content = new List<string>();
-        foreach (Match match in Regex.Matches(args, QuotedPattern))
+        foreach (Match match in Regex.Matches(args, RegExs.QuotedPattern))
         {
             if(!File.Exists(match.Groups[1].Value))
                 continue;

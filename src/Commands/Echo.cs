@@ -2,9 +2,7 @@
 
 public class EchoCommand : ICommand
 {
-    private const string QuotedPattern = @"(?<=')[^']*(?='|$)";
-    private const string Pattern = @"\s+";
-
+    
     public void Execute(string args)
     {
         if (string.IsNullOrWhiteSpace(args))
@@ -14,8 +12,8 @@ public class EchoCommand : ICommand
         }
 
         Console.WriteLine(!args.Contains("'")
-            ? Regex.Replace(args, Pattern, " ")
-            : string.Join("", Regex.Matches(args, QuotedPattern)));
+            ? Regex.Replace(args, RegExs.SpacePattern, " ")
+            : string.Join("", Regex.Matches(args, RegExs.QuotedPattern)));
     }
     
 }
