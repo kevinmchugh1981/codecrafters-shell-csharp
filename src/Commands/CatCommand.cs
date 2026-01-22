@@ -14,9 +14,9 @@ public class CatCommand :ICommand
         var content = new List<string>();
         foreach (Match match in Regex.Matches(args, RegExs.QuotedPattern))
         {
-            if(!File.Exists(match.Groups[1].Value))
+            if(!File.Exists(match.Groups[0].Value))
                 continue;
-            using var stream = new StreamReader(match.Groups[1].Value);
+            using var stream = new StreamReader(match.Groups[0].Value);
             content.Add(stream.ReadToEnd().Trim());
         }
         
