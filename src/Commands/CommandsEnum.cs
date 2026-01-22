@@ -7,6 +7,7 @@ internal static class CommandsEnum
         "exit",
         "type",
         "pwd",
-        "cd"
+        "cd",
+        "cat"
     ];
 }
