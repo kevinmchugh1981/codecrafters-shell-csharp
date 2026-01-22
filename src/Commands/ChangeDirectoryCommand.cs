@@ -3,12 +3,12 @@
 
     public void Execute(string args)
     {
-        switch (args.Length)
+        switch (string.IsNullOrWhiteSpace(args))
         {
-            case > 1 when !string.IsNullOrWhiteSpace(args) && Directory.Exists(args):
+            case false when Directory.Exists(args):
                 Directory.SetCurrentDirectory(args);
                 break;
-            case > 1 when !string.IsNullOrWhiteSpace(args) && args == "~":
+            case false when args == "~":
                 Directory.SetCurrentDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
                 break;
             default:
