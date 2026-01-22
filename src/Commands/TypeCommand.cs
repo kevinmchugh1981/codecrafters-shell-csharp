@@ -6,7 +6,7 @@ public class TypeCommand : ICommand
     public void Execute(string args)
     {
 
-        if (CommandsEnum.Commands.ContainsKey(args) && CommandsEnum.IsShellBuiltIn(args))
+        if (Constants.Commands.ContainsKey(args) && Constants.IsShellBuiltIn(args))
         {
             Console.Out.WriteLine($"{args} is a shell builtin");
         }

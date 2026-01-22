@@ -3,7 +3,7 @@
     public static ICommand CreateCommand(string command)
     {
 
-        if (CommandsEnum.Commands.TryGetValue(command, out var newCommand))
+        if (Constants.Commands.TryGetValue(command, out var newCommand))
             return newCommand();
         
         if (FileSearcher.IsExecutable(command, out var filePath))
