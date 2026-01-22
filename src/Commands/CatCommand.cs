@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-public class CatCommand : ICommand
+﻿public class CatCommand : ICommand
 {
     public void Execute(string args)
     {
@@ -11,11 +9,9 @@ public class CatCommand : ICommand
         }
 
         var content = new List<string>();
-        foreach (Match match in Regex.Matches(args, args.Contains('\'') ? RegExs.QuotedPattern : RegExs.SpacePattern))
+        foreach (var path in args.Parse().Where(File.Exists))
         {
-            if (!File.Exists(match.Groups[0].Value))
-                continue;
-            using var stream = new StreamReader(match.Groups[0].Value);
+            using var stream = new StreamReader(path);
             content.Add(stream.ReadToEnd().Trim());
         }
 
