@@ -13,7 +13,7 @@
 
     internal static bool IsShellBuiltIn(string command)
     {
-        var shellBuiltInCommands = new[] { EchoTitle, TypeTitle, PwdTitle, ChangeDirectoryTitle };
+        var shellBuiltInCommands = new[] { EchoTitle, TypeTitle, PwdTitle, ChangeDirectoryTitle, ExitTitle };
         return shellBuiltInCommands.Contains(command);
     }
 
