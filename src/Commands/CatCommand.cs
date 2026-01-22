@@ -20,7 +20,7 @@ public class CatCommand :ICommand
             content.Add(stream.ReadToEnd().Trim());
         }
         
-        Console.WriteLine(string.Join(" ", content));
+        Console.WriteLine(string.Join("", content));
     }
 
     
