@@ -8,6 +8,6 @@
             Directory.SetCurrentDirectory(args[1]);
         }
         else
-            Console.Out.WriteLine($"{args[0]}: {args[1]}: No such file or directory.");
+            Console.Out.WriteLine($"{args[0]}: {args[1]}: No such file or directory");
     }
 }
