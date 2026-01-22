@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-
-public class CatCommand :ICommand
+﻿public class CatCommand :ICommand
 {
     public void Execute(string[] args)
     {
@@ -11,13 +9,9 @@ public class CatCommand :ICommand
         }
 
         var content = new List<string>();
-        foreach (var path in args.Skip(1).Select(x=> x.Replace("'", string.Empty)))
+        var paths = args.Skip(1).ToArray().ParseStrings();
+        foreach (var path in paths.Where(File.Exists))
         {
-            if (!File.Exists(path))
-            {
-                continue;
-            }
-
             using var stream = new StreamReader(path);
             content.Add(stream.ReadToEnd());
         }

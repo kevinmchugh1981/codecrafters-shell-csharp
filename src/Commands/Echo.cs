@@ -9,9 +9,7 @@
         }
 
         var content = args.Skip(1).ToArray();
+        Console.WriteLine(string.Join("",  content.ParseStrings()));
 
-        Console.WriteLine(content.All(x => !x.Contains('\''))
-            ? string.Join(" ", content.Where(x => !string.IsNullOrWhiteSpace(x)))
-            : string.Join(" ", content.Select(x => x.Replace("'", string.Empty))));
     }
 }
