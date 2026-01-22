@@ -2,7 +2,7 @@
 
 public class EchoCommand : ICommand
 {
-    private const string QuotedPattern = @"(?<=')[^']*(?=')";
+    private const string QuotedPattern = @"(?<=')[^']*(?='|$)";
     private const string Pattern = @"\s+";
 
     public void Execute(string args)
