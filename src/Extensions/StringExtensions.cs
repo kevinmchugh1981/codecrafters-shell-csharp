@@ -1,47 +1,72 @@
 ﻿internal static class StringExtensions
 {
+private static List<char> Delimiters = new() { '\'', '"' };
+
     internal static List<string> Parse(this string args)
     {
-        if (args.StartsWith('\''))
-            return Parse(args, '\'');
-
-        return args.StartsWith('"') ? Parse(args, '\"') : args.Split(" ").ToList();
-    }
-
-    private static List<string> Parse(string args, char delimiter)
-    {
         var result = new List<string>();
-
-        if (string.IsNullOrWhiteSpace(args) || char.IsWhiteSpace(delimiter))
-            return result;
-
-        var currentString = string.Empty;
-        for (var x = 0; x < args.Length; x++)
-        {
-            if (args[x] == delimiter)
-            {
-                if (x == 0)
-                    continue;
-                if (string.IsNullOrWhiteSpace(currentString) && currentString.Length > 1)
-                    currentString = " ";
-                result.Add(currentString);
-                currentString = string.Empty;
-                continue;
-            }
-
-            currentString += args[x];
-
-            if (x != args.Length - 1)
-            {
-                continue;
-            }
-
-            if (string.IsNullOrWhiteSpace(currentString) && currentString.Length > 1)
-                currentString = " ";
-            result.Add(currentString);
-
-        }
-
-        return result;
+       
+               if (string.IsNullOrWhiteSpace(str))
+                   return result;
+       
+               //Only blank spaces.
+               if (str.Contains(Delimiters[0]) || str.Contains(Delimiters[1]))
+               {
+                   return GetBetweenDelimiters(str);
+               }
+       
+               result = str.Split(" ").ToList().Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+               return result;
     }
+
+   private static List<string> GetBetweenDelimiters(string str)
+       {
+           var result = new List<string>();
+           var insideQuotes = false;
+           var currentString = string.Empty;
+           var doubleDelimiter = false;
+           for (var x = 0; x < str.Length; x++)
+           {
+               if (Delimiters.Contains(str[x]))
+               {
+                   insideQuotes = !insideQuotes;
+                   if (!insideQuotes)
+                   {
+                       if (currentString != string.Empty)
+                           if (!doubleDelimiter)
+                           {
+                               result.Add(currentString);
+                               currentString = string.Empty;
+                           }
+                           else
+                               doubleDelimiter = false;
+                   }
+                   else if (x + 1 <= str.Length - 1)
+                   {
+                       doubleDelimiter = str[x] == str[x + 1];
+                   }
+               }
+               else if (insideQuotes)
+               {
+                   currentString += str[x];
+               }
+               else if (!insideQuotes)
+               {
+                   if (char.IsWhiteSpace(str[x]) && !string.IsNullOrWhiteSpace(currentString))
+                   {
+                       result.Add(currentString);
+                       currentString = string.Empty;
+                   }
+                   else if (!char.IsWhiteSpace(str[x]))
+                   {
+                       currentString += str[x];
+                   }
+               }
+   
+               if (x == str.Length - 1 && !string.IsNullOrWhiteSpace(currentString))
+                   result.Add(currentString);
+           }
+   
+           return result;
+       }
 }
