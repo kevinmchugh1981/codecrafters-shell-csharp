@@ -1,6 +1,6 @@
 ﻿internal static class StringExtensions
 {
-    private static List<char> Delimiters = new() { '\'', '"' };
+    private static readonly List<char> Delimiters = ['\'', '"'];
 
     internal static List<string> Parse(this string args)
     {
