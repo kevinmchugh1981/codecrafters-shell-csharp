@@ -24,33 +24,38 @@
         var result = new List<string>();
         var insideDelimiter = false;
         var currentString = string.Empty;
+        var currentDelimiter = char.MinValue;
 
         for (var x = 0; x < str.Length; x++)
         {
             //Inside a delimiter and char doesn't close it.
-            if (insideDelimiter && !Delimiters.Contains(str[x]))
+            if (insideDelimiter && str[x] != currentDelimiter)
                 currentString += str[x];
             //Not inside a delimiter and the char opens delimiter.
-            else if (!insideDelimiter && Delimiters.Contains(str[x]))
+            else if (!insideDelimiter && Delimiters.Contains(str[x]) && currentDelimiter != str[x])
             {
-                if (!string.IsNullOrWhiteSpace(currentString) && x - 1 >= 0 && !Delimiters.Contains(str[x - 1]))
+                //Store current string before, opening new one.
+                if (!string.IsNullOrWhiteSpace(currentString) && x - 1 >= 0 && !Delimiters.Contains(str[x - 1]) && 
+                    (x +1 <= str.Length - 1 && !Delimiters.Contains(str[x + 1])))
                 {
                     result.Add(currentString);
                     currentString = string.Empty;
                 }
-
+                currentDelimiter = str[x];
                 insideDelimiter = true;
                 continue;
             }
             //Inside a delimiter and char closes delimiter
-            else if (insideDelimiter && Delimiters.Contains(str[x]))
+            else if (insideDelimiter && Delimiters.Contains(str[x]) && currentDelimiter == str[x])
             {
+                //Store current string before closing.
                 if (!string.IsNullOrWhiteSpace(currentString) 
-                    && (x +1 <= str.Length - 1 && !Delimiters.Contains(str[x + 1]) || x== str.Length-1))
+                    && ((x +1 <= str.Length - 1 && !Delimiters.Contains(str[x + 1]) && str[x]!=str[x-1])|| x== str.Length-1) )
                 {
                     result.Add(currentString);
                     currentString = string.Empty;
                 }
+                currentDelimiter = char.MinValue;
                 insideDelimiter = false;
                 continue;
             }
@@ -64,6 +69,5 @@
         }
 
         return result;
-
     }
 }
