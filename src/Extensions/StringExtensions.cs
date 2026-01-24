@@ -22,54 +22,48 @@
     private static List<string> GetBetweenDelimiters(string str)
     {
         var result = new List<string>();
-        var insideQuotes = false;
+        var insideDelimiter = false;
         var currentString = string.Empty;
-        var doubleDelimiter = false;
+
         for (var x = 0; x < str.Length; x++)
         {
-            if (Delimiters.Contains(str[x]))
-            {
-                insideQuotes = !insideQuotes;
-                if (!insideQuotes)
-                {
-                    if(x + 1 <= str.Length - 1 && str[x] == str[x + 1])
-                        continue;
-                    
-                    if (currentString != string.Empty)
-                        if (!doubleDelimiter)
-                        {
-                            result.Add(currentString);
-                            currentString = string.Empty;
-                        }
-                        else
-                            doubleDelimiter = false;
-                }
-                else if (x + 1 <= str.Length - 1)
-                {
-                    doubleDelimiter = str[x] == str[x + 1];
-                }
-            }
-            else if (insideQuotes)
-            {
+            //Inside a delimiter and char doesn't close it.
+            if (insideDelimiter && !Delimiters.Contains(str[x]))
                 currentString += str[x];
-            }
-            else if (!insideQuotes)
+            //Not inside a delimiter and the char opens delimiter.
+            else if (!insideDelimiter && Delimiters.Contains(str[x]))
             {
-                if (char.IsWhiteSpace(str[x]) && !string.IsNullOrWhiteSpace(currentString))
+                if (!string.IsNullOrWhiteSpace(currentString) && x - 1 >= 0 && !Delimiters.Contains(str[x - 1]))
                 {
                     result.Add(currentString);
                     currentString = string.Empty;
                 }
-                else if (!char.IsWhiteSpace(str[x]))
-                {
-                    currentString += str[x];
-                }
-            }
 
-            if (x == str.Length - 1 && !string.IsNullOrWhiteSpace(currentString))
+                insideDelimiter = true;
+                continue;
+            }
+            //Inside a delimiter and char closes delimiter
+            else if (insideDelimiter && Delimiters.Contains(str[x]))
+            {
+                if (!string.IsNullOrWhiteSpace(currentString) 
+                    && (x +1 <= str.Length - 1 && !Delimiters.Contains(str[x + 1]) || x== str.Length-1))
+                {
+                    result.Add(currentString);
+                    currentString = string.Empty;
+                }
+                insideDelimiter = false;
+                continue;
+            }
+            //If you aren't inside a delimiter and this isn't one, add none-whitespace chars
+            else if (!insideDelimiter && !Delimiters.Contains(str[x]))
+                currentString += char.IsWhiteSpace(str[x]) ? string.Empty : str[x];
+
+            //If this is the end then store remaining string.
+            if (!string.IsNullOrWhiteSpace(currentString) && x == str.Length - 1)
                 result.Add(currentString);
         }
 
         return result;
+
     }
 }
