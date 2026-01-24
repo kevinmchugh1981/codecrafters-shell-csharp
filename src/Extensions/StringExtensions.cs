@@ -25,17 +25,16 @@
         var insideQuotes = false;
         var currentString = string.Empty;
         var doubleDelimiter = false;
-        var currentDelimiter = char.MinValue;
         for (var x = 0; x < str.Length; x++)
         {
             if (Delimiters.Contains(str[x]))
             {
-                if (!insideQuotes)
-                    currentDelimiter = str[x];
-
                 insideQuotes = !insideQuotes;
                 if (!insideQuotes)
                 {
+                    if(x + 1 <= str.Length - 1 && str[x] == str[x + 1])
+                        continue;
+                    
                     if (currentString != string.Empty)
                         if (!doubleDelimiter)
                         {
@@ -45,7 +44,7 @@
                         else
                             doubleDelimiter = false;
                 }
-                else if (x == currentDelimiter && x + 1 <= str.Length - 1)
+                else if (x + 1 <= str.Length - 1)
                 {
                     doubleDelimiter = str[x] == str[x + 1];
                 }
