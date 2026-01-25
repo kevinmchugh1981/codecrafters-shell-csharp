@@ -30,7 +30,7 @@
                     if (insideDelimiter && str[x] != currentDelimiter)
                         currentString += str[x];
                     //Not inside a delimiter and the char opens delimiter.
-                    else if (!insideDelimiter && Delimiters.Contains(str[x]) && currentDelimiter != str[x])
+                    else if (!insideDelimiter && Delimiters.Contains(str[x]) && currentDelimiter != str[x] && !escapeNextChar)
                     {
                         //Store current string before, opening new one.
                         if (!string.IsNullOrWhiteSpace(currentString) && x - 1 >= 0 && !Delimiters.Contains(str[x - 1]) &&
@@ -40,7 +40,6 @@
                             currentString = string.Empty;
                         }
         
-                        escapeNextChar = false;
                         currentDelimiter = str[x];
                         insideDelimiter = true;
                         continue;
@@ -64,7 +63,16 @@
                     //If you aren't inside a delimiter and this isn't one, add none-whitespace chars
                     else if (!insideDelimiter && (!Delimiters.Contains(str[x]) || escapeNextChar))
                     {
-                        currentString += char.IsWhiteSpace(str[x]) && !escapeNextChar ? string.Empty : str[x];
+                        if (currentString.Count(y => y == '"') % 2 != 0)
+                        {
+                            currentString += str[x];
+                        }
+                        else
+                        {
+                            currentString += char.IsWhiteSpace(str[x]) && !escapeNextChar ? string.Empty : str[x];
+                        }
+                        
+                        
                         if (escapeNextChar) escapeNextChar = false;
                     }
         
