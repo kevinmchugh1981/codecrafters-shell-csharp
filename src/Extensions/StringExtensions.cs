@@ -30,7 +30,7 @@
                     if (insideDelimiter && str[x] != currentDelimiter)
                         currentString += str[x];
                     //Not inside a delimiter and the char opens delimiter.
-                    else if (!insideDelimiter && Delimiters.Contains(str[x]) && currentDelimiter != str[x] && !escapeNextChar)
+                    else if (!insideDelimiter && Delimiters.Contains(str[x]) && currentDelimiter != str[x])
                     {
                         //Store current string before, opening new one.
                         if (!string.IsNullOrWhiteSpace(currentString) && x - 1 >= 0 && !Delimiters.Contains(str[x - 1]) &&
@@ -40,6 +40,7 @@
                             currentString = string.Empty;
                         }
         
+                        escapeNextChar = false;
                         currentDelimiter = str[x];
                         insideDelimiter = true;
                         continue;
