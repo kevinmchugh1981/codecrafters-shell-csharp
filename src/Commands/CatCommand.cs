@@ -11,7 +11,7 @@ public class CatCommand : ICommand
         }
 
         var content = new List<string>();
-        foreach (var path in args.Parse(typeof(CatCommand)).Where(File.Exists))
+        foreach (var path in args.Parse().Where(File.Exists))
         {
             using var stream = new StreamReader(path);
             content.Add(stream.ReadToEnd().Trim());

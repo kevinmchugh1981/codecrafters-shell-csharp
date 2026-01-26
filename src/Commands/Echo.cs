@@ -10,7 +10,7 @@ public class EchoCommand : ICommand
             return;
         }
 
-        Console.Out.WriteLine(string.Join(" ", args.Parse(typeof(EchoCommand))));
+        Console.Out.WriteLine(string.Join(" ", args.Parse()));
         
     }
 }
