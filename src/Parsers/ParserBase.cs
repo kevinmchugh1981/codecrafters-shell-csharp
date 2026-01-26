@@ -7,7 +7,7 @@
     protected List<string> Result = new();
     protected string CurrentString = string.Empty;
     protected bool EscapeNextChar;
-    private bool insideDelimiter;
+    protected bool InsideDelimiter;
     private char currentDelimiter = char.MinValue;
 
     protected List<string> GetBetweenDelimiters(string str)
@@ -15,23 +15,23 @@
         Result = new List<string>();
         CurrentString = string.Empty;
         EscapeNextChar = false;
-        insideDelimiter = false;
+        InsideDelimiter = false;
         currentDelimiter = char.MinValue;
 
         for (var x = 0; x < str.Length; x++)
         {
             //Outside a delimiter and char is an escape char, which you aren't already escaping
-            if (!insideDelimiter && str[x] == '\\' && !EscapeNextChar)
+            if (!InsideDelimiter && str[x] == '\\' && !EscapeNextChar)
             {
                 EscapeNextChar = true;
                 continue;
             }
 
             //Inside a delimiter and char doesn't close it.
-            if (insideDelimiter && str[x] != currentDelimiter)
+            if (InsideDelimiter && str[x] != currentDelimiter)
                 CurrentString += str[x];
             //Not inside a delimiter and the char opens delimiter.
-            else if (!insideDelimiter && Delimiters.Contains(str[x]) && currentDelimiter != str[x] && !EscapeNextChar)
+            else if (!InsideDelimiter && Delimiters.Contains(str[x]) && currentDelimiter != str[x] && !EscapeNextChar)
             {
                 //Store current string before, opening new one.
                 if (!string.IsNullOrWhiteSpace(CurrentString) && x - 1 >= 0 && !Delimiters.Contains(str[x - 1]) &&
@@ -42,11 +42,11 @@
                 }
 
                 currentDelimiter = str[x];
-                insideDelimiter = true;
+                InsideDelimiter = true;
                 continue;
             }
             //Inside a delimiter and char closes delimiter
-            else if (insideDelimiter && Delimiters.Contains(str[x]) && currentDelimiter == str[x])
+            else if (InsideDelimiter && Delimiters.Contains(str[x]) && currentDelimiter == str[x])
             {
                 //Store current string before closing.
                 if (!string.IsNullOrWhiteSpace(CurrentString)
@@ -58,11 +58,11 @@
                 }
 
                 currentDelimiter = char.MinValue;
-                insideDelimiter = false;
+                InsideDelimiter = false;
                 continue;
             }
             //If you aren't inside a delimiter and this isn't one, add none-whitespace chars
-            else if (!insideDelimiter && (!Delimiters.Contains(str[x]) || EscapeNextChar))
+            else if (!InsideDelimiter && (!Delimiters.Contains(str[x]) || EscapeNextChar))
             {
                 if (CurrentString.Count(y => y == '"') % 2 != 0)
                 {
