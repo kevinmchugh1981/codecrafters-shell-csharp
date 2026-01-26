@@ -2,6 +2,9 @@
 {
     public List<string> Parse(string args)
     {
+        var test = GetBetweenDelimiters(args);
+        test = test.Select(x=> x.Replace(" ", string.Empty)).ToList();
+        return test;
         return string.IsNullOrEmpty(args) ? new List<string>() : GetBetweenDelimiters(args);
     }
     
