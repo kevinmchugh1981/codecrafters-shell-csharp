@@ -2,12 +2,12 @@
 {
     private static readonly List<char> Delimiters = ['\'', '"'];
 
-    internal static List<string> Parse(this string str)
+    internal static List<string> Parse(this string str, Type commandType)
     {
-        return string.IsNullOrWhiteSpace(str) ? new List<string>() : GetBetweenDelimiters(str);
+        return string.IsNullOrWhiteSpace(str) ? new List<string>() : GetBetweenDelimiters(str, commandType);
     }
 
-    private static List<string> GetBetweenDelimiters(string str)
+    private static List<string> GetBetweenDelimiters(string str, Type commandType)
     {
         var result = new List<string>();
         var insideDelimiter = false;
@@ -61,11 +61,11 @@
             //If you aren't inside a delimiter and this isn't one, add none-whitespace chars
             else if (!insideDelimiter && (!Delimiters.Contains(str[x]) || escapeNextChar))
             {
-                if (currentString.Count(y => y == '"') % 2 != 0)
+                if (currentString.Count(y => y == '"') % 2 != 0 || commandType != typeof(EchoCommand))
                 {
                     currentString += str[x];
                 }
-                else
+                else 
                 {
                     currentString += char.IsWhiteSpace(str[x]) && !escapeNextChar ? string.Empty : str[x];
                 }
