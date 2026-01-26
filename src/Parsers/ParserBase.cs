@@ -1,6 +1,7 @@
 ﻿public abstract class ParserBase
 {
     private static readonly List<char> Delimiters = new() { '\'', '"' };
+    private static readonly List<char> EscapableInDoubleQuites = new() { '"', '\\' };
 
     protected abstract Func< char,bool>? AdditionalProcessing { get; }
 
@@ -10,9 +11,9 @@
     protected bool InsideDelimiter;
     private char currentDelimiter = char.MinValue;
 
-    protected List<string> GetBetweenDelimiters(string str)
+     protected List<string> GetBetweenDelimiters(string str)
     {
-       Result = new List<string>();
+        Result = new List<string>();
         CurrentString = string.Empty;
         EscapeNextChar = false;
         InsideDelimiter = false;
@@ -28,8 +29,23 @@
             }
 
             //Inside a delimiter and char doesn't close it.
-            if (InsideDelimiter && str[x] != currentDelimiter)
-                CurrentString += str[x];
+            if (InsideDelimiter && str[x] != currentDelimiter || (EscapeNextChar &&  str[x] == currentDelimiter))
+            {
+                if (currentDelimiter == '"' && str[x] == '\\' && x + 1 <= str.Length - 1 && EscapableInDoubleQuites.Contains(str[x+1]) && !EscapeNextChar)
+                {
+                    EscapeNextChar = true;
+                }
+                else if (currentDelimiter == '"' && EscapableInDoubleQuites.Contains(str[x]) && EscapeNextChar)
+                {
+                    CurrentString += str[x];
+                    EscapeNextChar = false;
+                }
+                else if (!EscapeNextChar && !EscapableInDoubleQuites.Contains(str[x]))
+                {
+                    CurrentString +=  str[x];
+                }
+            }
+                
             //Not inside a delimiter and the char opens delimiter.
             else if (!InsideDelimiter && Delimiters.Contains(str[x]) && currentDelimiter != str[x] && !EscapeNextChar)
             {
@@ -48,6 +64,9 @@
             //Inside a delimiter and char closes delimiter
             else if (InsideDelimiter && Delimiters.Contains(str[x]) && currentDelimiter == str[x])
             {
+                if(InsideDelimiter && !EscapeNextChar && EscapableInDoubleQuites.Contains(str[x]) && x< str.Length - 1)
+                    continue;
+                
                 //Store current string before closing.
                 if (!string.IsNullOrWhiteSpace(CurrentString)
                     && ((x + 1 <= str.Length - 1 && !Delimiters.Contains(str[x + 1]) && str[x] != str[x - 1]) ||
