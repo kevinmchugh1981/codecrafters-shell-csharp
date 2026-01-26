@@ -2,6 +2,9 @@
 
 public class CatCommand : ICommand
 {
+
+    private readonly IParser parser = new ArgsParser();
+    
     public void Execute(string args)
     {
         if (string.IsNullOrWhiteSpace(args))
@@ -11,7 +14,7 @@ public class CatCommand : ICommand
         }
 
         var content = new List<string>();
-        foreach (var path in args.Parse().Where(File.Exists))
+        foreach (var path in parser.Parse(args).Where(File.Exists))
         {
             using var stream = new StreamReader(path);
             content.Add(stream.ReadToEnd().Trim());
