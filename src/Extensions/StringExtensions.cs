@@ -1,23 +1,10 @@
-﻿using System.Text.RegularExpressions;
-
-internal static class StringExtensions
+﻿internal static class StringExtensions
 {
     private static readonly List<char> Delimiters = ['\'', '"'];
 
     internal static List<string> Parse(this string str)
     {
-        var result = new List<string>();
-
-        if (string.IsNullOrWhiteSpace(str))
-            return result;
-
-        if (str.Contains(Delimiters[0]) || str.Contains(Delimiters[1]))
-        {
-            return GetBetweenDelimiters(str);
-        }
-
-        str = Regex.Replace(str, @"(\\{2})|\\", m => m.Value == @"\\" ? @"\" : "");
-        return str.Split(" ").ToList().Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+        return string.IsNullOrWhiteSpace(str) ? new List<string>() : GetBetweenDelimiters(str);
     }
 
     private static List<string> GetBetweenDelimiters(string str)
