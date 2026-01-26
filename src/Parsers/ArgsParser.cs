@@ -9,6 +9,9 @@
 
     private bool CheckArguments (char current)
     {
+        if (InsideDelimiter)
+            EscapeNextChar = false;
+        
         if (EscapeNextChar || !char.IsWhiteSpace(current))
         {
             return false;
