@@ -65,7 +65,12 @@
                 {
                     currentString += str[x];
                 }
-                else
+                else if (!escapeNextChar && char.IsWhiteSpace(str[x]))
+                {
+                    result.Add(currentString);
+                    currentString = string.Empty;
+                }
+
                 {
                     currentString += char.IsWhiteSpace(str[x]) && !escapeNextChar ? string.Empty : str[x];
                 }
