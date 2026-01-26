@@ -17,7 +17,8 @@
             return false;
         }
 
-        Result.Add(CurrentString);
+        if(!string.IsNullOrWhiteSpace(CurrentString))
+            Result.Add(CurrentString);
         CurrentString = string.Empty;
         return true;
     }

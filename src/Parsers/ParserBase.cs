@@ -12,7 +12,7 @@
 
     protected List<string> GetBetweenDelimiters(string str)
     {
-        Result = new List<string>();
+       Result = new List<string>();
         CurrentString = string.Empty;
         EscapeNextChar = false;
         InsideDelimiter = false;
@@ -34,7 +34,7 @@
             else if (!InsideDelimiter && Delimiters.Contains(str[x]) && currentDelimiter != str[x] && !EscapeNextChar)
             {
                 //Store current string before, opening new one.
-                if (!string.IsNullOrWhiteSpace(CurrentString) && x - 1 >= 0 && !Delimiters.Contains(str[x - 1]) &&
+                if (!string.IsNullOrWhiteSpace(CurrentString) && currentDelimiter != char.MinValue && x - 1 >= 0 && !Delimiters.Contains(str[x - 1]) &&
                     (x + 1 <= str.Length - 1 && !Delimiters.Contains(str[x + 1])))
                 {
                     Result.Add(CurrentString);
@@ -72,8 +72,7 @@
                 {
                     continue;
                 }
-                else
-                {
+                else{
                     CurrentString += char.IsWhiteSpace(str[x]) && !EscapeNextChar ? string.Empty : str[x];
                 }
 
