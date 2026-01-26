@@ -65,7 +65,7 @@
             //Inside a delimiter and char closes delimiter
             else if (InsideDelimiter && Delimiters.Contains(str[x]) && currentDelimiter == str[x])
             {
-                if(InsideDelimiter && !EscapeNextChar && EscapableInDoubleQuites.Contains(str[x]) && x< str.Length - 1 && currentDelimiter != str[x])
+                if(InsideDelimiter && !EscapeNextChar && EscapableInDoubleQuites.Contains(str[x]) && x< str.Length - 1)
                     continue;
                 
                 //Store current string before closing.
