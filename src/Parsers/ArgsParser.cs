@@ -9,6 +9,7 @@
 
     private bool CheckArguments (char current)
     {
+
         if (InsideDelimiter)
             EscapeNextChar = false;
         
