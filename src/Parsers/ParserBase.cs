@@ -11,7 +11,7 @@
     protected bool InsideDelimiter;
     private char currentDelimiter = char.MinValue;
 
-     protected List<string> GetBetweenDelimiters(string str)
+    protected List<string> GetBetweenDelimiters(string str)
     {
         Result = new List<string>();
         CurrentString = string.Empty;
@@ -21,6 +21,7 @@
 
         for (var x = 0; x < str.Length; x++)
         {
+           
             //Outside a delimiter and char is an escape char, which you aren't already escaping
             if (!InsideDelimiter && str[x] == '\\' && !EscapeNextChar)
             {
@@ -64,7 +65,7 @@
             //Inside a delimiter and char closes delimiter
             else if (InsideDelimiter && Delimiters.Contains(str[x]) && currentDelimiter == str[x])
             {
-                if(InsideDelimiter && !EscapeNextChar && EscapableInDoubleQuites.Contains(str[x]) && x< str.Length - 1)
+                if(InsideDelimiter && !EscapeNextChar && EscapableInDoubleQuites.Contains(str[x]) && x< str.Length - 1 && currentDelimiter != str[x])
                     continue;
                 
                 //Store current string before closing.
