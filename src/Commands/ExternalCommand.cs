@@ -1,13 +1,16 @@
 ﻿using System.Diagnostics;
 
-public class ExternalCommand(string filePath) : ICommand
+public class ExternalCommand( string filePath,string arguments) : ICommand
 {
-    public void Execute(string args)
+    public string Arguments { get; } = arguments;
+    private string FilePath { get; } = filePath;
+
+    public void Execute()
     {
-        var command = Path.GetFileName(filePath);
-        var directory = Path.GetDirectoryName(filePath);
+        var command = Path.GetFileName(FilePath);
+        var directory = Path.GetDirectoryName(FilePath);
         
-        var startInfo = new ProcessStartInfo(command, args)
+        var startInfo = new ProcessStartInfo(command, Arguments)
         {
             WorkingDirectory = directory,
             RedirectStandardError = true,

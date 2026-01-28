@@ -1,18 +1,18 @@
-﻿using System.Text.RegularExpressions;
-
-public class EchoCommand : ICommand
+﻿public class EchoCommand(string arguments) : ICommand
 {
     private readonly IParser parser = new ArgumentParser();
-    
-    public void Execute(string args)
+
+    public string Arguments { get; } = arguments;
+
+    public void Execute()
     {
-        if (string.IsNullOrWhiteSpace(args))
+        if (string.IsNullOrWhiteSpace(Arguments))
         {
             Console.WriteLine(string.Empty);
             return;
         }
 
-        Console.Out.WriteLine(string.Join(" ", parser.Parse(args)));
+        Console.Out.WriteLine(string.Join(" ", parser.Parse(Arguments)));
         
     }
 }

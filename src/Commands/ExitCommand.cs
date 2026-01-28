@@ -1,8 +1,8 @@
-﻿
-
-public class ExitCommand : ICommand
+﻿public class ExitCommand(string arguments) : ICommand
 {
-    public void Execute(string args)
+    public string Arguments { get; } = arguments;
+
+    public void Execute()
     {
         System.Environment.Exit(0);
     }

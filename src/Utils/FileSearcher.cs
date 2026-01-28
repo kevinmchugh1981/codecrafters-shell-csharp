@@ -2,10 +2,25 @@
 
 internal static class FileSearcher
 {
-    internal static bool IsExecutable(string command, out string filePath)
+    private static readonly IParser Parser = new FileParser();
+    
+    internal static bool IsExecutable(string command, out string filePath, out string parameters)
     {
         filePath = string.Empty;
+        parameters = string.Empty;
  
+        var commandElements = Parser.Parse(command);
+        
+        switch (commandElements.Count)
+        {
+            case 0:
+                return false;
+            case > 1:
+                parameters = string.Join(" ", commandElements.Skip(1));
+                break;
+        }
+
+
         var pathEnv = Environment.GetEnvironmentVariable("PATH");
         if (string.IsNullOrEmpty(pathEnv)) return false;
         var pathSeparator = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ';' : ':';
@@ -13,7 +28,7 @@ internal static class FileSearcher
         var directories = pathEnv.Split(pathSeparator);
         foreach (var directory in directories)
         {
-            var fullPath = Path.Combine(directory.Trim(), command);
+            var fullPath = Path.Combine(directory.Trim(), commandElements[0].Trim());
             
             if (IsFileExecutable(fullPath))
             {

@@ -1,14 +1,14 @@
 ﻿internal static class Constants
 {
-    internal static readonly Dictionary<string, Func<ICommand>> Commands =
+    internal static readonly Dictionary<string, Func<string, ICommand>> Commands =
         new()
         {
-            { EchoTitle, () => new EchoCommand() },
-            { TypeTitle, () => new TypeCommand() },
-            { PwdTitle, () => new PwdCommand() },
-            { ChangeDirectoryTitle, () => new ChangeDirectoryCommand() },
-            { CatTitle, () => new CatCommand() },
-            { ExitTitle, () => new ExitCommand() }
+            { EchoTitle, (x) => new EchoCommand(x) },
+            { TypeTitle, (x) => new TypeCommand(x) },
+            { PwdTitle, (x) => new PwdCommand() },
+            { ChangeDirectoryTitle, (x) => new ChangeDirectoryCommand(x) },
+            { CatTitle, (x) => new CatCommand(x) },
+            { ExitTitle, (x) => new ExitCommand(x) }
         };
 
     internal static bool IsShellBuiltIn(string command)

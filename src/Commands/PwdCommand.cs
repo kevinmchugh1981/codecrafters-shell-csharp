@@ -1,6 +1,8 @@
 ﻿public class PwdCommand : ICommand
 {
-    public void Execute(string args)
+    public string Arguments { get; }
+
+    public void Execute()
     {
         Console.WriteLine(Directory.GetCurrentDirectory());
     }

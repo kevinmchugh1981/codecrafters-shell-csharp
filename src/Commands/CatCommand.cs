@@ -1,20 +1,22 @@
 ﻿using System.Text.RegularExpressions;
 
-public class CatCommand : ICommand
+public class CatCommand(string arguments) : ICommand
 {
 
     private readonly IParser parser = new ArgumentParser();
-    
-    public void Execute(string args)
+
+    public string Arguments { get; } = arguments;
+
+    public void Execute()
     {
-        if (string.IsNullOrWhiteSpace(args))
+        if (string.IsNullOrWhiteSpace(Arguments))
         {
             Console.WriteLine(string.Empty);
             return;
         }
 
         var content = new List<string>();
-        foreach (var path in parser.Parse(args).Where(File.Exists))
+        foreach (var path in parser.Parse(Arguments).Where(File.Exists))
         {
             using var stream = new StreamReader(path);
             content.Add(stream.ReadToEnd().Trim());

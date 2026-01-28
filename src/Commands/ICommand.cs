@@ -1,4 +1,5 @@
 ﻿public interface ICommand
 {
-    void Execute(string args);
+    string Arguments { get; }
+    void Execute();
 }
