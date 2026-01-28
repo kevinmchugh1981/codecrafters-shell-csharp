@@ -8,15 +8,16 @@ internal class Bash
 
     public void Start()
     {
-        for ((string,string) input; (input = GetInput()).Item1 != "exit";)
+        do
         {
-            
+            var input = GetInput();
             if (string.IsNullOrWhiteSpace(input.Item1))
                 continue;
 
             var command = CommandFactory.CreateCommand(input.Item1);
             command.Execute(input.Item2);
         }
+        while (true);
     }
     
     private (string,string) GetInput()

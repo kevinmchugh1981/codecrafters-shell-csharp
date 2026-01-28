@@ -3,7 +3,7 @@
 public class CatCommand : ICommand
 {
 
-    private readonly IParser parser = new ArgsParser();
+    private readonly IParser parser = new ArgumentParser();
     
     public void Execute(string args)
     {

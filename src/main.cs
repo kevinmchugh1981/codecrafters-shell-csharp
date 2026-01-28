@@ -2,8 +2,20 @@ class Program
 {
     static void Main()
     {
-        var bash = new Bash();
-        bash.Start();
+        var test = false;
+
+        if (test)
+        {
+            var tests = new BashTests();
+            tests.Execute();
+        }
+        else
+        {
+            var bash = new Bash();
+            bash.Start();
+        }
+        
+       
     }
 
 

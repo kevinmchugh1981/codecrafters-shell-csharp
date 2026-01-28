@@ -1,0 +1,7 @@
+﻿/tmp/bee/"number 87" /tmp/bee/"doublequote \" 34" /tmp/bee/"backslash \\ 27"
+/tmp/bee/"number 2" /tmp/bee/"doublequote \" 11" /tmp/bee/"backslash \\ 53"
+/tmp/owl/"number 76" /tmp/owl/"doublequote \" 10" /tmp/owl/"backslash \\ 99"
+/tmp/owl/\_ignored_44 /tmp/owl/ignore_\73 /tmp/owl/just_one_\\_7
+/tmp/'no slash 1' /tmp/'one slash \2' /tmp/'two slashes \3\'
+/tmp/dog/'no slash 20' /tmp/dog/'one slash \7' /tmp/dog/'two slashes \77\'
+/tmp/"number 1" /tmp/"doublequote \" 2" /tmp/"backslash \\ 3"

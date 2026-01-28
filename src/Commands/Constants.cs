@@ -8,7 +8,7 @@
             { PwdTitle, () => new PwdCommand() },
             { ChangeDirectoryTitle, () => new ChangeDirectoryCommand() },
             { CatTitle, () => new CatCommand() },
-            { ExitTitle, () => throw new ArgumentException() }
+            { ExitTitle, () => new ExitCommand() }
         };
 
     internal static bool IsShellBuiltIn(string command)

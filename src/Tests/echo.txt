@@ -1,0 +1,13 @@
+﻿"shell\"insidequotes"example\"
+'script     world' 'shell''example' test''hello
+\'\"script shell\"\'
+"inside\"literal_quote."outside\"
+"just'one'\\n'backslash"
+\'\"literal quotes\"\'
+"hello    test"
+hello         test
+test\ \ \ \ \ \ hello
+\'\"hello example\"\'
+ example     script
+'multiple\\slashes'
+'every\"thing_is\"literal'

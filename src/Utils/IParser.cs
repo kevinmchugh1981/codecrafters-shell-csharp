@@ -1,4 +1,6 @@
-﻿public interface IParser
+﻿
+
+public interface IParser
 {
     List<string> Parse(string args);
 }

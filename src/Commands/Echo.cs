@@ -2,7 +2,7 @@
 
 public class EchoCommand : ICommand
 {
-    private readonly IParser parser = new TextParser();
+    private readonly IParser parser = new ArgumentParser();
     
     public void Execute(string args)
     {
