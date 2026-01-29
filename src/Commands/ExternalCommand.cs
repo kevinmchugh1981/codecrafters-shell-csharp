@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics;
 
-public class ExternalCommand( string filePath,string arguments) : ICommand
+public class ExternalCommand( string filePath,string arguments) : BaseCommand
 {
-    public string Arguments { get; } = arguments;
+    public override string Arguments { get; } = arguments;
+    public override bool CanRedirect => false;
     private string FilePath { get; } = filePath;
 
-    public void Execute()
+    public override void Execute()
     {
         var command = Path.GetFileName(FilePath);
         var directory = Path.GetDirectoryName(FilePath);
@@ -22,8 +23,8 @@ public class ExternalCommand( string filePath,string arguments) : ICommand
         var error = process?.StandardError.ReadToEnd();
         process?.WaitForExit();
         if(!string.IsNullOrWhiteSpace(output))
-            Console.Write(output);
+            Output(output);
         if(!string.IsNullOrWhiteSpace(error))
-            Console.Write(error);
+            Output(error);
     }
 }

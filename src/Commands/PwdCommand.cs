@@ -1,9 +1,11 @@
-﻿public class PwdCommand : ICommand
+﻿public class PwdCommand : BaseCommand
 {
-    public string Arguments { get; }
+    public override string Arguments => string.Empty;
+    public override bool CanRedirect => false;
 
-    public void Execute()
+
+    public override void Execute()
     {
-        Console.WriteLine(Directory.GetCurrentDirectory());
+        Output(Directory.GetCurrentDirectory());
     }
 }

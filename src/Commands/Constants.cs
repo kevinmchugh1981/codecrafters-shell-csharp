@@ -8,7 +8,8 @@
             { PwdTitle, (x) => new PwdCommand() },
             { ChangeDirectoryTitle, (x) => new ChangeDirectoryCommand(x) },
             { CatTitle, (x) => new CatCommand(x) },
-            { ExitTitle, (x) => new ExitCommand(x) }
+            { ExitTitle, (x) => new ExitCommand(x) },
+            {ListTitle, (x)=> new ListCommand(x) },
         };
 
     internal static bool IsShellBuiltIn(string command)
@@ -23,4 +24,5 @@
     private const string ChangeDirectoryTitle = "cd";
     private const string CatTitle = "cat";
     private const string ExitTitle = "exit";
+    private const string ListTitle = "ls";
 }

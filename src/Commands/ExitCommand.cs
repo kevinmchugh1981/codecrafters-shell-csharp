@@ -1,9 +1,10 @@
-﻿public class ExitCommand(string arguments) : ICommand
+﻿public class ExitCommand(string arguments) : BaseCommand
 {
-    public string Arguments { get; } = arguments;
+    public override string Arguments { get; } = arguments;
+    public override bool CanRedirect => false;
 
-    public void Execute()
+    public override void Execute()
     {
-        System.Environment.Exit(0);
+        Environment.Exit(0);
     }
 }

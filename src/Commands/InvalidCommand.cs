@@ -1,13 +1,14 @@
-﻿public class InvalidCommand(string command, string arguments) : ICommand
+﻿public class InvalidCommand(string command, string arguments) : BaseCommand
 {
     
-    public string Arguments { get; } = arguments;
+    public override string Arguments { get; } = arguments;
+    public override bool CanRedirect => false;
 
     private string Command { get; } = command;
 
-    public void Execute()
+    public override void Execute()
     {
         var command = Command + (string.IsNullOrWhiteSpace(Arguments) ? string.Empty :$" {Arguments}");
-        Console.Out.WriteLine($"{command}: command not found");
+        Output($"{command}: command not found");
     }
 }

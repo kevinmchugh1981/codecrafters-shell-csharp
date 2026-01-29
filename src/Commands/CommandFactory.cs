@@ -10,7 +10,7 @@ public static class CommandFactory
 
         var parseCommand = TryParseCommand(command);
         
-        if (Constants.Commands.TryGetValue(parseCommand.Item1, out var newCommand))
+        if (Constants.Commands.TryGetValue(parseCommand.Item1.ToLower(), out var newCommand))
             return newCommand(parseCommand.Item2);
         
         if (FileSearcher.IsExecutable(command, out var filePath, out var parameters))

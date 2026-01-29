@@ -1,13 +1,12 @@
-﻿using System.Text.RegularExpressions;
-
-public class CatCommand(string arguments) : ICommand
+﻿public class CatCommand(string arguments) : BaseCommand
 {
 
     private readonly IParser parser = new ArgumentParser();
 
-    public string Arguments { get; } = arguments;
+    public override string Arguments { get; } = arguments;
+    public override bool CanRedirect => true;
 
-    public void Execute()
+    public override void Execute()
     {
         if (string.IsNullOrWhiteSpace(Arguments))
         {
@@ -22,7 +21,7 @@ public class CatCommand(string arguments) : ICommand
             content.Add(stream.ReadToEnd().Trim());
         }
 
-        Console.WriteLine(string.Join("", content));
+        Output( string.Join("", content));
     }
     
 }
