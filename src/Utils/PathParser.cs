@@ -1,4 +1,4 @@
-﻿public class FileParser : IParser
+﻿public class PathParser : IParser
 {
     public List<string> Parse(string args)
     {

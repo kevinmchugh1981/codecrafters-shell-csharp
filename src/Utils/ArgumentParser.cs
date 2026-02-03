@@ -1,7 +1,7 @@
 ﻿public class ArgumentParser : IParser
 {
     
-    private static readonly List<char> Delimiters = ['\'', '"'];
+    
     private static readonly char EscapeDelimiter = '\\';
 
     public List<string> Parse(string args)
@@ -11,11 +11,11 @@
             return [];
         
         //Concatenate any words that contain double delimiters.
-        args = Delimiters.Aggregate(args,
+        args = UtilsConstants.Delimiters.Aggregate(args,
             (current, delimiter) => current.Replace($"{delimiter}{delimiter}", string.Empty));
         
         //Check if it's only a list of arguments with not delimiters.
-        if(!args.Any(x=> Delimiters.Contains(x)) && args.All(x => x != EscapeDelimiter))
+        if(!args.Any(x=> UtilsConstants.Delimiters.Contains(x)) && args.All(x => x != EscapeDelimiter))
             return args.Split().Where(x=> !string.IsNullOrWhiteSpace(x)).ToList();
 
         var result = new List<string>();
@@ -32,14 +32,14 @@
             }
             
             //If char is escapable, you are not in single quotes, and it's not currently being escaped, set it to escape.
-            if (args[x] == EscapeDelimiter && currentDelimiter != Delimiters[0]  && !escapeNextChar)
+            if (args[x] == EscapeDelimiter && currentDelimiter != UtilsConstants.Delimiters[0]  && !escapeNextChar)
             {
                 escapeNextChar = true;
                 continue;
             }
             
             //Check if char is delimiter
-            if (Delimiters.Contains(args[x]))
+            if (UtilsConstants.Delimiters.Contains(args[x]))
             {
                 //If inside delimiter, and current char is not the same as current delimiter - Add char.
                 if (currentDelimiter != char.MinValue && (currentDelimiter != args[x] || escapeNextChar))
@@ -72,7 +72,7 @@
                 escapeNextChar = false;
                 
                 //If there are no more chars then store the last value.
-                if (x == args.Length - 1)
+                if (x == args.Length - 1 && !string.IsNullOrEmpty(currentString))
                     result.Add(currentString);
                 
                 continue;
@@ -102,7 +102,7 @@
             escapeNextChar = false;
 
             //If there are no more chars then store the last value.
-            if (x == args.Length - 1)
+            if (x == args.Length - 1 && !string.IsNullOrEmpty(currentString))
                 result.Add(currentString);
         }
 

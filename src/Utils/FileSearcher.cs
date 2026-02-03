@@ -2,7 +2,7 @@
 
 internal static class FileSearcher
 {
-    private static readonly IParser Parser = new FileParser();
+    private static readonly IParser Parser = new PathParser();
     
     internal static bool IsExecutable(string command, out string filePath, out string parameters)
     {

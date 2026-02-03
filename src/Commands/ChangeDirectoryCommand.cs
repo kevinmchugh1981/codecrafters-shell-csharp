@@ -14,7 +14,7 @@
                 Directory.SetCurrentDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
                 break;
             default:
-                Output($"cd: {Arguments}: No such file or directory");
+                Console.Out.WriteLine($"cd: {Arguments}: No such file or directory");
                 break;
         }
     }

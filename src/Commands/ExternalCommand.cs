@@ -23,8 +23,9 @@ public class ExternalCommand( string filePath,string arguments) : BaseCommand
         var error = process?.StandardError.ReadToEnd();
         process?.WaitForExit();
         if(!string.IsNullOrWhiteSpace(output))
-            Output(output);
+            Console.Write(output);
         if(!string.IsNullOrWhiteSpace(error))
-            Output(error);
+            Console.Write(error);
     }
+    
 }

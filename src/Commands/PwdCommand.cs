@@ -6,6 +6,6 @@
 
     public override void Execute()
     {
-        Output(Directory.GetCurrentDirectory());
+        Console.WriteLine(Directory.GetCurrentDirectory());
     }
 }

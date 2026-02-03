@@ -8,15 +8,15 @@
 
         if (Constants.Commands.ContainsKey(Arguments) && Constants.IsShellBuiltIn(Arguments))
         {
-            Output($"{Arguments} is a shell builtin");
+            Console.Out.WriteLine($"{Arguments} is a shell builtin");
         }
         else if (FileSearcher.IsExecutable(Arguments, out var filePath, out string parameters))
         {
-            Output($"{Arguments} is {filePath}");
+            Console.Out.WriteLine($"{Arguments} is {filePath}");
         }
         else
         {
-            Output($"{Arguments}: not found");
+            Console.Out.WriteLine($"{Arguments}: not found");
         }
     }
 

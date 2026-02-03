@@ -25,4 +25,6 @@
     private const string CatTitle = "cat";
     private const string ExitTitle = "exit";
     private const string ListTitle = "ls";
+    
+    internal const string ListSwitch = "-1";
 }

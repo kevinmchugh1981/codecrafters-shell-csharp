@@ -1,3 +1,4 @@
+"exe with \'single quotes\'" /tmp/pig/f3
 'exe  with  space' /tmp/pig/f1
 'my program' argument1
 "exe with spaces" file.txt

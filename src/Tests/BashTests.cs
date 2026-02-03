@@ -5,9 +5,9 @@ public class BashTests
     
     private static readonly Dictionary<string, IParser> Files = new()
     {
-        //{"src/Tests/cat.txt", new ArgumentParser()},
+       // {"src/Tests/cat.txt", new ArgumentParser()},
        // {"src/Tests/echo.txt", new ArgumentParser()}
-       {"src/Tests/externalfile.txt", new FileParser()}
+       {"src/Tests/externalfile.txt", new ArgumentParser()}
     };
 
     

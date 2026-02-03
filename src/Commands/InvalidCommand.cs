@@ -9,6 +9,6 @@
     public override void Execute()
     {
         var command = Command + (string.IsNullOrWhiteSpace(Arguments) ? string.Empty :$" {Arguments}");
-        Output($"{command}: command not found");
+        Console.Out.WriteLine($"{command}: command not found");
     }
 }
