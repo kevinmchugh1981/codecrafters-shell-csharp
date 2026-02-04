@@ -53,15 +53,15 @@ public abstract class BaseCommand(RedirectType redirectType, string arguments) :
         switch (RedirectType)
         {
             //Redirect only errors, and is error, write to file.
-            case RedirectType.Error when isError:
+            case RedirectType.Error or RedirectType.ErrorAppend when isError:
                 ToFile(text);
                 break;
             //Redirect is output, and is error, write to screen.
-            case RedirectType.Output when isError:
+            case RedirectType.Output or RedirectType.OutputAppend when isError:
                 ToScreen(text);
                 break;
             //Redirect is output, and it's not an error, write to screen.
-            case RedirectType.Output when !isError:
+            case RedirectType.Output or RedirectType.OutputAppend when !isError:
                 ToFile(text);
                 break;
             default:
@@ -83,15 +83,19 @@ public abstract class BaseCommand(RedirectType redirectType, string arguments) :
             if (string.IsNullOrWhiteSpace(destination))
                 return;
 
-            if (!Directory.Exists(new FileInfo(destination).Directory?.FullName))
-                Directory.CreateDirectory(destination);
-
-            if (File.Exists(destination))
+            switch (RedirectType)
             {
-                File.AppendAllText(destination, text);
+                case RedirectType.Output:
+                case RedirectType.Error:
+                    File.WriteAllText(destination, text);
+                    break;
+                case RedirectType.OutputAppend:
+                case RedirectType.ErrorAppend:
+                    if(new FileInfo(destination).Length > 0)
+                        text = Environment.NewLine + text;
+                    File.AppendAllText(destination, text);
+                    break;
             }
-            else
-                File.WriteAllText(destination, text);
         }
         catch
         {

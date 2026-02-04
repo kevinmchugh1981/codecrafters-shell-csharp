@@ -5,7 +5,9 @@ public enum RedirectType
 {
     None,
     Output,
-    Error
+    Error,
+    OutputAppend,
+    ErrorAppend
 }
 
 public static class RedirectFunctions
@@ -18,8 +20,12 @@ public static class RedirectFunctions
         
         if(args.Contains(" 2> "))
             return RedirectType.Error;
+        if(args.Contains(" 2>> "))
+            return RedirectType.ErrorAppend;
         if(args.Contains(" 1> ") || args.Contains(" > "))
             return RedirectType.Output;
+        if(args.Contains(" 1>> ") || args.Contains(" >> "))
+            return RedirectType.OutputAppend;
         return RedirectType.None;
     }
 
@@ -52,10 +58,18 @@ public static class RedirectFunctions
             break;
         }
 
+        //Check if it's a two part index.
         var twoPartIndex = args[splitIndex - 1] == '1' ||  args[splitIndex - 1] == '2';
-
+        
+        //Check if it's a double redirect symbol.
+        var doubleRedirect = false;
+        if (args.Length >= splitIndex + 1)
+        {
+            doubleRedirect = args[splitIndex + 1] == '>';
+        }
+        
         var content = args[..(twoPartIndex ? splitIndex - 1 : splitIndex)];
-        var destination = args[(splitIndex + 1)..];
+        var destination = args[(splitIndex + (doubleRedirect ? 2 : 1))..];
         return (content, destination);
     }
 }
