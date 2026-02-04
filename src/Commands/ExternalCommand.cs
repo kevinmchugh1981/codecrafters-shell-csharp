@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics;
 
-public class ExternalCommand( string filePath,string arguments) : BaseCommand
+public class ExternalCommand( string filePath,string arguments) : BaseCommand(RedirectType.None, arguments)
 {
-    public override string Arguments { get; } = arguments;
-    public override bool CanRedirect => false;
     private string FilePath { get; } = filePath;
 
     public override void Execute()
@@ -18,14 +16,18 @@ public class ExternalCommand( string filePath,string arguments) : BaseCommand
             RedirectStandardOutput = true,
             UseShellExecute = false
         };
-        using var process = Process.Start(startInfo);
+        using var process = System.Diagnostics.Process.Start(startInfo);
         var output = process?.StandardOutput.ReadToEnd();
         var error = process?.StandardError.ReadToEnd();
         process?.WaitForExit();
         if(!string.IsNullOrWhiteSpace(output))
-            Console.Write(output);
+            Output(output);
         if(!string.IsNullOrWhiteSpace(error))
-            Console.Write(error);
+            Output(error, true);
     }
-    
+
+    protected override void ToScreen(string output)
+    {
+        Console.Write(output);
+    }
 }

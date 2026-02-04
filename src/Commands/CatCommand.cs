@@ -1,54 +1,25 @@
 ﻿using System.Text;
 
-public class CatCommand(string arguments) : BaseCommand
+public class CatCommand(string arguments, RedirectType redirectType) : BaseCommand(redirectType, arguments)
 {
-    private readonly IParser argumentParser = new ArgumentParser();
-
-    public override string Arguments { get; } = arguments;
-    public override bool CanRedirect => true;
-
-    public override void Execute()
+    
+    protected override void Process()
     {
-        if (string.IsNullOrWhiteSpace(Arguments))
-        {
-            Console.WriteLine(string.Empty);
-            return;
-        }
-
-        if (CanRedirect && RedirectFunctions.Redirect(Arguments))
-            Redirect();
-        else
-            ToScreen();
-    }
-
-    private void ToScreen()
-    {
-        //Load content
-        var content = argumentParser.Parse(Arguments);
-        
         //Validate files exists
-        content = GetExistingFiles(content);
+        var content = GetExistingFiles(ArgumentParser.Parse(Arguments));
         if (content.Count == 0)
             return;
         
         //Generate content
         var fileContent= GenerateContent(content);
-        Console.WriteLine(string.Join("", fileContent));
+        Output(string.Join("", fileContent));
     }
 
-    private void Redirect()
+    protected override void Redirect()
     {
-        //Split on delimiter
-        var splitArguments = RedirectFunctions.Split(Arguments);
-
-        //Parse before delimiter.
-        var content = argumentParser.Parse(splitArguments.Item1);
-
-        //Parse destination.
-        var destination = argumentParser.Parse(splitArguments.Item2).First();
-
+        
         //Files exists
-        content = GetExistingFiles(content);
+        var content = GetExistingFiles(ParseRedirect());
         if (content.Count == 0)
             return;
         
@@ -59,7 +30,7 @@ public class CatCommand(string arguments) : BaseCommand
             stringBuilder.AppendLine(line);
 
         //Write to file.
-        RedirectFunctions.Write(stringBuilder, destination);
+        Output(stringBuilder.ToString().Trim());
     }
 
     private List<string> GenerateContent(List<string> target)
@@ -80,7 +51,7 @@ public class CatCommand(string arguments) : BaseCommand
         foreach (var path in paths)
         {
             if(!File.Exists(path))
-                Console.WriteLine($"cat: {path}: No such file or directory");
+                Output($"cat: {path}: No such file or directory", true);
             else
                 results.Add(path);
         }

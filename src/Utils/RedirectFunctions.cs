@@ -1,11 +1,26 @@
 ﻿using System.Text;
 
+
+public enum RedirectType
+{
+    None,
+    Output,
+    Error
+}
+
 public static class RedirectFunctions
 {
-    public static bool Redirect(string args)
+    
+    public static RedirectType GetRedirectType(string args)
     {
-        return args.Contains(" > ", StringComparison.InvariantCultureIgnoreCase)
-               || args.Contains(" 1> ", StringComparison.InvariantCultureIgnoreCase);
+        if(string.IsNullOrWhiteSpace(args))
+            return RedirectType.None;
+        
+        if(args.Contains(" 2> "))
+            return RedirectType.Error;
+        if(args.Contains(" 1> ") || args.Contains(" > "))
+            return RedirectType.Output;
+        return RedirectType.None;
     }
 
     public static (string, string) Split(string args)
@@ -37,55 +52,10 @@ public static class RedirectFunctions
             break;
         }
 
-        var twoPartIndex = args[splitIndex - 1] == '1';
+        var twoPartIndex = args[splitIndex - 1] == '1' ||  args[splitIndex - 1] == '2';
 
         var content = args[..(twoPartIndex ? splitIndex - 1 : splitIndex)];
         var destination = args[(splitIndex + 1)..];
         return (content, destination);
-    }
-
-    public static void Write(StringBuilder stringBuilder, string destination)
-    {
-        try
-        {
-            if (!Directory.Exists(new FileInfo(destination).Directory?.FullName))
-                Directory.CreateDirectory(destination);
-
-            if (File.Exists(destination))
-                File.Delete(destination);
-
-            File.WriteAllText(destination, stringBuilder.ToString());
-        }
-        catch
-        {
-            // ignored
-        }
-    }
-
-    public static bool TryParseRedirect(List<string> args, out List<string> content, out string destination)
-    {
-        content = [];
-        destination = string.Empty;
-        var lastItem = false;
-
-        foreach (var item in args)
-        {
-            if (item == ">")
-            {
-                lastItem = true;
-            }
-            else if (lastItem)
-            {
-                destination = item;
-                break;
-            }
-            else
-            {
-                content.Add(item);
-            }
-        }
-
-
-        return content.Any() && File.Exists(destination);
     }
 }

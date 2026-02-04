@@ -1,63 +1,48 @@
 ﻿using System.Text;
 
-public class ListCommand(string arguments) : BaseCommand
+public class ListCommand : BaseCommand
 {
-    private IParser argumentParser = new ArgumentParser();
     private bool isSingleColumn;
     
-    private string arguments = arguments;
-    public override string Arguments => arguments;
-    
-    public override bool CanRedirect => true;
-
-    public override void Execute()
+    public ListCommand(string arguments, RedirectType redirectType) : base(redirectType, arguments)
     {
-        if(string.IsNullOrWhiteSpace(Arguments))
-            return;
-
-        if (Arguments.StartsWith(Constants.ListSwitch))
+        this.Arguments = arguments;
+        if (!arguments.StartsWith(Constants.ListSwitch))
         {
-            isSingleColumn = true;
-            arguments =  Arguments.Substring(2);
+            return;
         }
-        
-        if (CanRedirect && RedirectFunctions.Redirect(Arguments))
-            Redirect();
-        else
-            foreach (var item in GenerateContent(Arguments))
-                Console.WriteLine(item);
 
+        isSingleColumn = true;
+        this.Arguments = arguments[2..];
     }
 
-    private void Redirect()
+    protected override void Redirect()
     {
-        //Split arguments.
-        var splitArguments = RedirectFunctions.Split(Arguments);
-        
-        //Parse input path
-        var target = argumentParser.Parse(splitArguments.Item1).First();
-
-        //Parse output path.
-        var output = argumentParser.Parse(splitArguments.Item2).First();
-
         //Generate output
         var builder = new StringBuilder();
-        foreach(var item in GenerateContent(target))
+        foreach (var item in GenerateContent(ParseRedirect().First()))
             builder.AppendLine(item);
 
         //Write to file.
-        RedirectFunctions.Write(builder,  output);
-
+        Output(builder.ToString());
     }
 
-    private  List<string> GenerateContent(string path)
+    private List<string> GenerateContent(string path)
     {
+        if (!Directory.Exists(path))
+        {
+            Output($"ls: {path}: No such file or directory",true);
+            return [];
+        }
+
+        ;
+
         var items = Directory.GetFileSystemEntries(path).Select(Path.GetFileName).OrderBy(x => x)
             .ToList();
 
         if (items.Count == 0)
             return [];
-        
+
         var result = new List<string>();
         foreach (var item in items.Where(item => !string.IsNullOrWhiteSpace(item)))
         {
@@ -70,6 +55,7 @@ public class ListCommand(string arguments) : BaseCommand
                 result.Add(item + " ");
             }
         }
+
         return result;
     }
 }

@@ -1,8 +1,6 @@
-﻿public class ChangeDirectoryCommand(string args) : BaseCommand
+﻿public class ChangeDirectoryCommand(string arguments) : BaseCommand(RedirectType.None, arguments)
 {
-    public override string Arguments { get; } = args;
-    public override bool CanRedirect => false;
-
+    
     public override void Execute()
     {
         switch (string.IsNullOrWhiteSpace(Arguments))
@@ -14,7 +12,7 @@
                 Directory.SetCurrentDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
                 break;
             default:
-                Console.Out.WriteLine($"cd: {Arguments}: No such file or directory");
+                Output($"cd: {Arguments}: No such file or directory", true);
                 break;
         }
     }

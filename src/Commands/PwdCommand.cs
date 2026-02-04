@@ -1,11 +1,8 @@
-﻿public class PwdCommand : BaseCommand
+﻿public class PwdCommand() : BaseCommand(RedirectType.None, string.Empty)
 {
-    public override string Arguments => string.Empty;
-    public override bool CanRedirect => false;
-
-
+    
     public override void Execute()
     {
-        Console.WriteLine(Directory.GetCurrentDirectory());
+        Output(Directory.GetCurrentDirectory());
     }
 }

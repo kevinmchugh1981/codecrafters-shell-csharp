@@ -1,44 +1,14 @@
-﻿using System.Text;
-
-public class EchoCommand(string arguments) : BaseCommand
+﻿public class EchoCommand(string arguments, RedirectType redirectType) : BaseCommand(redirectType, arguments)
 {
-    private readonly IParser argumentParser = new ArgumentParser();
     
-    public override string Arguments { get; } = arguments;
-    public override bool CanRedirect => true;
-
-    public override void Execute()
+    protected override void Process()
     {
-        if (string.IsNullOrWhiteSpace(Arguments))
-        {
-            Console.WriteLine(string.Empty);
-            return;
-        }
-
-        if (CanRedirect && RedirectFunctions.Redirect(Arguments))
-            Redirect();
-        else
-            Console.Out.WriteLine(string.Join(" ", argumentParser.Parse(Arguments)));
+        Output(string.Join(" ", ArgumentParser.Parse(Arguments)));
     }
-    
-    private void Redirect()
+
+    protected override void Redirect()
     {
-        //Split on delimiter
-        var splitArguments = RedirectFunctions.Split(Arguments);
-        
-        //Parse before delimiter.
-        var content = argumentParser.Parse(splitArguments.Item1);
-        
-        //Parse destination.
-        var destination = argumentParser.Parse(splitArguments.Item2).First();
-        
-        //Generate output
-        var stringBuilder = new StringBuilder();
-        foreach(var line in content)
-            stringBuilder.AppendLine(line);
-        
-        //Write to file.
-       RedirectFunctions.Write(stringBuilder, destination);
+       Output(string.Join(" ", ParseRedirect()));
     }
     
 }
