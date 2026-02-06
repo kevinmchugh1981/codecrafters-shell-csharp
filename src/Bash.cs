@@ -6,7 +6,7 @@
     {
         do
         {
-            var input = GetInput();
+            var input = Keyboard.GetInput();
             if (string.IsNullOrWhiteSpace(input))
                 continue;
 
@@ -14,12 +14,6 @@
             command.Execute();
         }
         while (true);
-    }
-    
-    private string GetInput()
-    {
-        Console.Write("$ ");
-        return Console.ReadLine();
     }
     
 }
