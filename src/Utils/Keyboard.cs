@@ -1,11 +1,5 @@
 ﻿public static class Keyboard
 {
-    public static string GetInputSimple()
-    {
-        Console.Write("$ ");
-        return Console.ReadLine();
-    }
-
     public static string GetInput()
     {
         Console.Write("$ ");
@@ -19,12 +13,20 @@
                     Console.WriteLine();
                     return currentLine;
                 case ConsoleKey.Tab:
-                    var command = Constants.Commands.FirstOrDefault(x=> x.Key.StartsWith(currentLine,  StringComparison.InvariantCultureIgnoreCase)).Key ?? string.Empty;
+                    var command = Constants.Commands.FirstOrDefault(x =>
+                        x.Key.StartsWith(currentLine, StringComparison.InvariantCultureIgnoreCase)).Key ?? string.Empty;
                     if (!string.IsNullOrWhiteSpace(command))
                     {
                         command += " ";
                         Console.Write($"\r$ {command}");
                         currentLine = command;
+                    }
+                    else if (FileSearcher.AutoComplete(currentLine, out var externalCommand))
+                    {
+                        externalCommand += " ";
+                        Console.Write($"\r$ {externalCommand}");
+                        currentLine = externalCommand;
+                        
                     }
                     else
                     {
@@ -32,6 +34,7 @@
                         currentLine += key.KeyChar;
                         Console.Write(key.KeyChar);
                     }
+
                     break;
                 case ConsoleKey.Backspace:
                 {
@@ -51,6 +54,4 @@
             }
         }
     }
-    
-    
 }
