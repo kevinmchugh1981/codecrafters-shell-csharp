@@ -28,8 +28,9 @@
                     }
                     else
                     {
+                        Console.Write('\a');
                         currentLine += key.KeyChar;
-                        Console.WriteLine(key.KeyChar);
+                        Console.Write(key.KeyChar);
                     }
                     break;
                 case ConsoleKey.Backspace:
