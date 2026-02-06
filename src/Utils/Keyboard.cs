@@ -22,7 +22,8 @@
                     var command = Constants.Commands.FirstOrDefault(x=> x.Key.StartsWith(currentLine,  StringComparison.InvariantCultureIgnoreCase)).Key ?? string.Empty;
                     if (!string.IsNullOrWhiteSpace(command))
                     {
-                        Console.Write($"\r$ {command} ");
+                        command += " ";
+                        Console.Write($"\r$ {command}");
                         currentLine = command;
                     }
                     else
