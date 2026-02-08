@@ -4,6 +4,7 @@
     {
         Console.Write("$ ");
         var currentLine = string.Empty;
+        ConsoleKeyInfo? previousKey = null;
         while (true)
         {
             var key = Console.ReadKey(true);
@@ -20,13 +21,25 @@
                         command += " ";
                         Console.Write($"\r$ {command}");
                         currentLine = command;
+                        break;
                     }
-                    else if (FileSearcher.AutoComplete(currentLine, out var externalCommand))
+                    if (FileSearcher.AutoComplete(currentLine.Trim(), out var externalCommands) &&
+                        previousKey is { Key: ConsoleKey.Tab })
                     {
-                        externalCommand += " ";
+                        var content = string.Join("  ", externalCommands.OrderBy(x => x));
+                        Console.WriteLine();
+                        Console.WriteLine(content);
+                        Console.Write($"\r$ {currentLine}");
+                    }
+                    else if (previousKey.HasValue && previousKey.Value.Key != ConsoleKey.Tab && externalCommands.Count == 1)
+                    {
+                        var externalCommand = externalCommands.First()+ " ";
                         Console.Write($"\r$ {externalCommand}");
                         currentLine = externalCommand;
-                        
+                    }
+                    else if(previousKey.HasValue && previousKey.Value.Key != ConsoleKey.Tab && externalCommands.Any())
+                    {
+                        Console.Write('\a');
                     }
                     else
                     {
@@ -52,6 +65,8 @@
                     Console.Write(key.KeyChar);
                     break;
             }
+    
+            previousKey = key;
         }
     }
-}
+}   

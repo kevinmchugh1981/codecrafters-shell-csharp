@@ -5,9 +5,9 @@ internal static class FileSearcher
     private static readonly IParser Parser = new PathParser();
 
 
-    internal static bool AutoComplete(string criteria, out string externalCommand)
+    internal static bool AutoComplete(string criteria, out List<string> externalCommand)
     {
-        externalCommand = string.Empty;
+        externalCommand = new List<string>();
 
         if (!TryGetDirectories(out var directories))
             return false;
@@ -19,18 +19,13 @@ internal static class FileSearcher
 
             foreach (var file in Directory.GetFiles(directory))
             {
-                if (!Path.GetFileName(file).StartsWith(criteria, StringComparison.InvariantCultureIgnoreCase) ||
-                    !IsFileExecutable(file))
-                {
-                    continue;
-                }
-
-                externalCommand = Path.GetFileName(file);
-                return true;
+                if (Path.GetFileName(file).StartsWith(criteria, StringComparison.InvariantCultureIgnoreCase) &&
+                    IsFileExecutable(file))
+                    externalCommand.Add(Path.GetFileName(file));
             }
         }
 
-        return false;
+        return externalCommand.Count > 0;
     }
 
     internal static bool IsExecutable(string command, out string filePath, out string parameters)
